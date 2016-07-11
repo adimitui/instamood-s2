@@ -1,34 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Instamood</title>
+
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-  <script src="./script.js"></script>
-	<title>Instamood</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+	<script src="./script.js"></script>
+
+	<!-- Link to CSS Stylesheet -->
+	<link rel="stylesheet" type="text/css" href="theme.css"/>
+
+	<!-- Links to Font Families -->
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 </head>
 <body ng-app="Instamood">
-	<div class="container" ng-controller="MainCtrl">
+	<div ng-controller="MainCtrl">
 		<div class="row">
 			<div class="login-btn btn" ng-hide="hasToken" ng-click="getInstaPics()">
-				  <a href="https://api.instagram.com/oauth/authorize/?client_id=8ae6b7dda3b340b588c0734820a6ed11&redirect_uri=http://localhost:8001&response_type=token" class="btn btn-info btn-lg btn-block">
-          <i class="fa fa-instagram"></i>
-            Log in with Instagram
-          </a>
-			</div>
-			<div ng-show="hasToken">
-        <!-- challenge: make it so that you don't have to click this link for
-             the pictures the load -->
-				<a ng-click="getInstaPics()">Load pictures!</a>
-				<ul>
-          <!-- this loops through all your pictures -->
-					<li ng-repeat="pic in picArray track by $index">
-            {{ pic }} <!-- what should be here instead? -->
-					</li>
-				</ul>
+				<a href="https://api.instagram.com/oauth/authorize/?client_id=988e80289fa740f29e8a0c16399a8e8c&redirect_uri=http://localhost:8000&response_type=token" class="btn btn-info btn-lg btn-block">
+					<i class="fa fa-instagram"></i>
+					Log in with Instagram
+				</a>
 			</div>
 		</div>
+			
+		<div ng-show="hasToken">
+			<!-- Header -->
+			<div class="header">
+	        	<h1>Instamood</h1>
+	        	<img src="http://i346.photobucket.com/albums/p438/adimitui/Black%20Camera_zpswxi3hcwo.png"/>
+	        </div>
+
+	        <!-- Challenge: make it so that you don't have to click this link for
+	        the pictures the load -->
+	        <div class="center">
+	        	<a class="show-stats" ng-click="getInstaPics(); showStats=!showStats" ng-hide="showStats">Load pictures!</a>
+	        </div>
+
+	        <div class="center">
+	        	<div class="row">
+	        		<div class="col-md-12">
+	        			<div class="basic-info">
+		        			<h1>{{ fullName }}</h1>
+		        			<h3>{{ username }}</h3>
+	        			</div>
+	        		</div>
+	        	</div>
+
+	        	<!-- Statistics -->
+	        	<div class="row">
+	        		<div class="one-half">
+	        			<div class="profile-picture">
+	        				<img src="{{ profilePicture }}"/>
+	        			</div>
+	        		</div>
+	        		<div class="one-half">
+	        			<div class="stats" ng-show="showStats">
+		        			<h4><strong>Ego Score: </strong>{{ egoScore }}</h4>
+				        	<h4><strong>Popularity: </strong>{{ popularity }}</h4>
+				        	<h4><strong>Active days: </strong>{{ activeDays }}</h4>
+			    	    	<h4><strong>Brevity: </strong>{{ brevity }}</h4>
+			        		<h4><strong>Visibility Thirst: </strong>{{ visibilityThirst }}</h4>
+		        		</div>
+	        		</div>
+	        	</div>
+
+		        <!-- Picture grid -->
+		        <div class="container">
+			        <ul>
+			        	<!-- this loops through all your pictures -->
+			        	<li ng-repeat="pic in picArray track by $index">
+			        		<div class="imageBlock">
+				        		<div class="overlay"><img src="{{ pic.images.standard_resolution.url }}"/></div>
+				        		<p><strong>{{ pic.caption.from.username }}</strong> {{ pic.caption.text }}</p>
+			        		</div>
+			        	</li>
+			        </ul>
+		        </div>
+	        </div>
+	    </div>
 	</div>
-	
 </body>
 </html>
